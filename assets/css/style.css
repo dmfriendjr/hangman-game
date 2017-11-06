@@ -1,0 +1,42 @@
+body, html {
+    height: 100%;
+    font-family: 'Arbutus', cursive;
+    color: black;
+}
+.bg { 
+    /* The image used */
+    background-image: url("../images/poster-background.jpeg");
+
+	
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.card {
+	background-color: #C19E75;
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+}
+
+.title-text {
+	text-align: center;
+}
+
+
+.guessed-display-wrapper,
+.word-display-wrapper {
+	letter-spacing: 15px;
+}
+
+#word-display:first-letter {
+	text-transform: capitalize;
+}
