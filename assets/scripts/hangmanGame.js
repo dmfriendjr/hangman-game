@@ -1,6 +1,6 @@
 const canvas = document.querySelector('canvas');
-canvas.width = document.getElementById('canvas-wrapper').offsetWidth;
-canvas.height = document.getElementById('canvas-wrapper').offsetHeight;
+//canvas.width = document.getElementById('canvas-wrapper').offsetWidth;
+//canvas.height = document.getElementById('canvas-wrapper').offsetHeight;
 const ctx = canvas.getContext('2d');
 
 var hangmanGame = {
@@ -40,7 +40,6 @@ var hangmanGame = {
 		this.guessedWord = '';
 		document.getElementById('key-prompt-text').innerHTML = 'Guess the Word!';
 
-
 		//Choose random word
 		this.chooseWord();
 
@@ -70,7 +69,9 @@ var hangmanGame = {
 				this.guessedWord = this.word;
 				break;
 			case 'lost':
-				document.getElementById('key-prompt-text').innerHTML = 'You hung him, hombre.';
+				document.getElementById('key-prompt-text').innerHTML = 'You hung him.';
+				//Display the 'word'
+				this.guessedWord = this.word;
 				break;					
 		}
 
@@ -79,7 +80,8 @@ var hangmanGame = {
 		document.getElementById('guesses-remaining-display').innerHTML = this.guessesRemaining;
 		document.getElementById('score-display').innerHTML = this.score;
 		document.getElementById('word-display').innerHTML = this.guessedWord;
-		document.getElementById('guessed-display').innerHTML = this.guessedLetters.toString().toUpperCase();
+		//Convert array to string, to upper case, then remove commas. Display formatting is done by CSS
+		document.getElementById('guessed-display').innerHTML = this.guessedLetters.toString().toUpperCase().replace(/,/g, '');
 	},
 
 
@@ -127,6 +129,7 @@ var hangmanGame = {
 	},
 
 	handleInput: function(letter) {
+		console.log('test');
 
 		switch(this.currentGameState) {
 			case 'preGame':
@@ -187,12 +190,19 @@ var stickFigure = {
 				this.ctx.moveTo(canvas.width/5, canvas.height-25);
 				this.ctx.lineTo(canvas.width/5,canvas.height-250);
 				this.ctx.stroke();
+				this.ctx.closePath();
 				break;
 			case 7:
+				this.ctx.lineCap="round";
+				this.ctx.beginPath();
+				this.ctx.moveTo(canvas.width/5,canvas.height-250);
 				this.ctx.lineTo(canvas.width/5 + 100, canvas.height-250);
 				this.ctx.stroke();			
+				this.ctx.closePath();
 				break;
 			case 6:
+				this.ctx.beginPath();
+				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-250);
 				this.ctx.lineTo(canvas.width/5 + 100, canvas.height-200);
 				this.ctx.stroke();
 				this.ctx.closePath();
@@ -208,25 +218,35 @@ var stickFigure = {
 				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-170);
 				this.ctx.lineTo(canvas.width/5 + 100, canvas.height-105);
 				this.ctx.stroke();
+				this.ctx.closePath();
 				break;
 			case 3:
+				this.ctx.beginPath();
+				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-105);
 				this.ctx.lineTo(canvas.width/5 + 125, canvas.height-50);
 				this.ctx.stroke();
+				this.ctx.closePath();
 				break;
 			case 2: 
+				this.ctx.beginPath();
 				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-105);
 				this.ctx.lineTo(canvas.width/5 + 75, canvas.height-50);
 				this.ctx.stroke();
+				this.ctx.closePath();
 				break;
 			case 1:
+				this.ctx.beginPath();
 				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-150);
 				this.ctx.lineTo(canvas.width/5 + 125, canvas.height-100);
 				this.ctx.stroke();
+				this.ctx.closePath();
 				break;
 			case 0:
+				this.ctx.beginPath();
 				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-150);
 				this.ctx.lineTo(canvas.width/5 + 75, canvas.height-100);
 				this.ctx.stroke();
+				this.ctx.closePath();
 				break;
 
 		}
@@ -242,6 +262,15 @@ String.prototype.replaceAt=function(index, char) {
 document.onkeyup = function(event) {
 	let letter = String.fromCharCode(event.keyCode).toLowerCase();
 	hangmanGame.handleInput(letter);
+}
+
+//Subscribe to events from on screen button inputs
+let buttons = document.getElementsByClassName('letter-input');
+
+for (var i = 0; i < buttons.length; i++) {
+	buttons[i].addEventListener('click', function(event) {
+		hangmanGame.handleInput(this.getAttribute('data-letter'));
+	});
 }
 
 

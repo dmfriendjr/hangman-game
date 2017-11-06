@@ -14,12 +14,12 @@
 	<div class="bg">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center">
+				<div class="col-md-12 text-center">
 					<h1 class="title-text">Hangman</h1>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-12 text-center">
+			<div class="row justify-content-center">
+				<div class="col-md-8 text-center">
 					<div class="card">
 						<div class="card-header">
 							<h2 class="title-text" id="key-prompt-text">Any Key To Start</h2>	
@@ -28,15 +28,25 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="word-display-wrapper">
-										<p id="word-display"></p>
+										<p id="word-display">_____</p>
 									</div>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-6">
-									<div class="guessed-display-wrapper">
-										<p id="guessed-display"></p>
-									</div>	
+								<div class="col-md-3">
+									<div class="row">
+										<div class="col-md-12">
+											<p>Guesses:</p>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+										<div class="guessed-display-wrapper">
+											<p id="guessed-display"></p>
+										</div>		
+										</div>
+									</div>
+
 								</div>
 								<div class="col-md-6">
 									<div class="card-body" id="canvas-wrapper">
@@ -62,19 +72,39 @@
 					</div>
 				</div>
 			</div>
-			<!-- Modal -->
-			<div class="modal fade" id="winLoseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-body text-center">
-			        <h1 id="modal-text"></h1>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			  </div>
+			<div class="row justify-content-center">
+				<div class="col-md-8">
+					<input class="letter-input" data-letter="a"subscr type="button" value="A">
+					<input class="letter-input" data-letter="b" type="button" value="B">
+					<input class="letter-input" data-letter="c" type="button" value="C">
+					<input class="letter-input" data-letter="d" type="button" value="D">
+					<input class="letter-input" data-letter="e" type="button" value="E">
+					<input class="letter-input" data-letter="f" type="button" value="F">
+					<input class="letter-input" data-letter="g" type="button" value="G">
+					<input class="letter-input" data-letter="h" type="button" value="H">
+					<input class="letter-input" data-letter="i" type="button" value="I">
+					<input class="letter-input" data-letter="j" type="button" value="J">
+					<input class="letter-input" data-letter="k" type="button" value="K">
+					<input class="letter-input" data-letter="l" type="button" value="L">
+					<input class="letter-input" data-letter="m" type="button" value="M">
+				</div>
 			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-8">
+					<input class="letter-input" data-letter="n" type="button" value="N">
+					<input class="letter-input" data-letter="o" type="button" value="O">
+					<input class="letter-input" data-letter="p" type="button" value="P">
+					<input class="letter-input" data-letter="q" type="button" value="Q">
+					<input class="letter-input" data-letter="r" type="button" value="R">
+					<input class="letter-input" data-letter="s" type="button" value="S">
+					<input class="letter-input" data-letter="t" type="button" value="T">
+					<input class="letter-input" data-letter="u" type="button" value="U">
+					<input class="letter-input" data-letter="v" type="button" value="V">
+					<input class="letter-input" data-letter="w" type="button" value="W">
+					<input class="letter-input" data-letter="x" type="button" value="X">
+					<input class="letter-input" data-letter="y" type="button" value="Y">
+					<input class="letter-input" data-letter="z" type="button" value="Z">
+				</div>
 			</div>
 		</div>
 	</div>
