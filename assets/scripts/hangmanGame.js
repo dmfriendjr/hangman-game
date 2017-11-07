@@ -1,6 +1,4 @@
 const canvas = document.querySelector('canvas');
-//canvas.width = document.getElementById('canvas-wrapper').offsetWidth;
-//canvas.height = document.getElementById('canvas-wrapper').offsetHeight;
 const ctx = canvas.getContext('2d');
 
 var hangmanGame = {
@@ -9,6 +7,7 @@ var hangmanGame = {
 	guessesRemaining: 11,
 	guessedLetters: [],
 	score: 0,
+	usedWords: [],
 	possibleWords: 
 		[
 		'saloon',
@@ -39,7 +38,7 @@ var hangmanGame = {
 		this.guessedLetters = [];
 		this.guessedWord = '';
 		document.getElementById('key-prompt-text').innerHTML = 'Guess the Word!';
-
+		stickFigure.resetDrawing();
 		//Choose random word
 		this.chooseWord();
 
@@ -53,12 +52,28 @@ var hangmanGame = {
 
 		//Change game state
 		this.currentGameState = 'inPlay';
-
-		stickFigure.initialize();
 	},
 
 	chooseWord: function () {
 		this.word = this.possibleWords[Math.floor(Math.random()*this.possibleWords.length)];
+
+		//Don't use the same word twice until all have been used
+		if (this.usedWords.indexOf(this.word) !== -1)
+		{
+			//Word has been used, see if all words have been used
+			if (this.usedWords.length === this.possibleWords.length) {
+				//Reset used words
+				this.usedWords = [];
+			}
+			else
+			{
+				//Picked word already used, choose new one
+				this.chooseWord();
+			}
+		} else {
+			//Word hasn't been used yet, add to used words to track
+			this.usedWords.push(this.word);
+		}
 	},
 
 	updateDisplay: function (gameState) {
@@ -129,12 +144,9 @@ var hangmanGame = {
 	},
 
 	handleInput: function(letter) {
-		console.log('test');
-
 		switch(this.currentGameState) {
 			case 'preGame':
 				this.initialize();
-				console.log(this.currentGameState);
 				break;
 			case 'inPlay':
 				this.checkGuess(letter);
@@ -164,97 +176,62 @@ var hangmanGame = {
 
 var stickFigure = {
 	ctx: canvas.getContext('2d'),
-	animationStateIndex: 0,
 
-	initialize: function () {
-		canvas.width = 300;
-		canvas.height = 300;
-		this.ctx.strokeStyle = 'black';
-		this.ctx.lineWidth = 5;
-		this.ctx.closePath();
+	resetDrawing: function () {
+		this.ctx.clearRect(0,0,canvas.width,canvas.height);
 	},
 
 	updateDrawing: function (guessesRemaining) {
-		//this.ctx.clearRect(0,0,canvas.width,canvas.height);
-
 		switch (guessesRemaining) {
-			case 9:
+			case 9: //Draw gallows base and setup line style
+				this.ctx.strokeStyle = 'black';
+				this.ctx.lineWidth = 5;
+				this.drawLine(canvas.width/8, canvas.height-10, canvas.width/2,canvas.height-10);
+				break;
+			case 8: //Draw gallows part 2
+				this.drawLine(canvas.width/5, canvas.height-10,canvas.width/5,canvas.height-140);
+				break;
+			case 7: //Draw gallows 'arm'
+				this.ctx.lineCap='round';
+				this.drawLine(canvas.width/5,canvas.height-140,canvas.width/2, canvas.height-140);
+				break;
+			case 6: // Draw rope
+				this.drawLine(canvas.width/2, canvas.height-140,canvas.width/2, canvas.height-120);
+				break;
+			case 5: // Draw head
 				this.ctx.beginPath();
-				this.ctx.moveTo(canvas.width/8, canvas.height-25);
-				this.ctx.lineTo(canvas.width/2,canvas.height-25);
+				this.ctx.arc(canvas.width/2, canvas.height-110, 10, 0, Math.PI * 2, false);
 				this.ctx.stroke();
 				this.ctx.closePath();
 				break;
-			case 8:
-				this.ctx.beginPath();
-				this.ctx.moveTo(canvas.width/5, canvas.height-25);
-				this.ctx.lineTo(canvas.width/5,canvas.height-250);
-				this.ctx.stroke();
-				this.ctx.closePath();
+			case 4: //Draw body
+				this.drawLine(canvas.width/2, canvas.height-100,canvas.width/2, canvas.height-60);
 				break;
-			case 7:
-				this.ctx.lineCap="round";
-				this.ctx.beginPath();
-				this.ctx.moveTo(canvas.width/5,canvas.height-250);
-				this.ctx.lineTo(canvas.width/5 + 100, canvas.height-250);
-				this.ctx.stroke();			
-				this.ctx.closePath();
+			case 3: // Draw leg 1
+				this.drawLine(canvas.width/2, canvas.height-60,canvas.width/2 - 15, canvas.height-40);
 				break;
-			case 6:
-				this.ctx.beginPath();
-				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-250);
-				this.ctx.lineTo(canvas.width/5 + 100, canvas.height-200);
-				this.ctx.stroke();
-				this.ctx.closePath();
+			case 2: // Draw leg 2
+				this.drawLine(canvas.width/2, canvas.height-60,canvas.width/2 + 15, canvas.height-40);
 				break;
-			case 5:
-				this.ctx.beginPath();
-				this.ctx.arc(canvas.width/5 + 100, canvas.height-185, 15, 0, Math.PI * 2, false);
-				this.ctx.stroke();
-				this.ctx.closePath();
+			case 1: // Draw arm 1
+				this.drawLine(canvas.width/2, canvas.height-80,canvas.width/2 + 15, canvas.height-90);
 				break;
-			case 4: 
-				this.ctx.beginPath();
-				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-170);
-				this.ctx.lineTo(canvas.width/5 + 100, canvas.height-105);
-				this.ctx.stroke();
-				this.ctx.closePath();
+			case 0: // Draw arm 2
+				this.drawLine(canvas.width/2, canvas.height-80,canvas.width/2 - 15, canvas.height-90);
 				break;
-			case 3:
-				this.ctx.beginPath();
-				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-105);
-				this.ctx.lineTo(canvas.width/5 + 125, canvas.height-50);
-				this.ctx.stroke();
-				this.ctx.closePath();
-				break;
-			case 2: 
-				this.ctx.beginPath();
-				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-105);
-				this.ctx.lineTo(canvas.width/5 + 75, canvas.height-50);
-				this.ctx.stroke();
-				this.ctx.closePath();
-				break;
-			case 1:
-				this.ctx.beginPath();
-				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-150);
-				this.ctx.lineTo(canvas.width/5 + 125, canvas.height-100);
-				this.ctx.stroke();
-				this.ctx.closePath();
-				break;
-			case 0:
-				this.ctx.beginPath();
-				this.ctx.moveTo(canvas.width/5 + 100, canvas.height-150);
-				this.ctx.lineTo(canvas.width/5 + 75, canvas.height-100);
-				this.ctx.stroke();
-				this.ctx.closePath();
-				break;
-
 		}
+	},
+
+	drawLine: function(startX, startY, endX, endY) {
+		this.ctx.beginPath();
+		this.ctx.moveTo(startX, startY);
+		this.ctx.lineTo(endX, endY);
+		this.ctx.stroke();
+		this.ctx.closePath();
 	}
 }
 
-
-//No replaceAt function builtin to strings, use this instead
+//No replaceAt function built-in to strings, use this instead
 String.prototype.replaceAt=function(index, char) {
 	return this.substr(0, index) + char + this.substr(index+char.length);
 }
@@ -265,7 +242,7 @@ document.onkeyup = function(event) {
 }
 
 //Subscribe to events from on screen button inputs
-let buttons = document.getElementsByClassName('letter-input');
+const buttons = document.getElementsByClassName('letter-input');
 
 for (var i = 0; i < buttons.length; i++) {
 	buttons[i].addEventListener('click', function(event) {
