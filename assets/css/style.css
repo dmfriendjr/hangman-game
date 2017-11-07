@@ -14,9 +14,6 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
-.bg { 
-
-}
 
 .card {
 	background-color: #C19E75;
@@ -25,7 +22,6 @@ body {
 .title-text {
 	text-align: center;
 }
-
 
 #guessed-display,
 #word-display {
@@ -45,6 +41,20 @@ body {
     background-color: #C19E75;
 }
 
+.letter-input:active {
+    transform: scale(.925);
+}
+
 .letter-input:focus {
     outline: 0;
+}
+
+.flashit{
+  color: black;
+    animation: flash linear 1s infinite;
+}
+@keyframes flash {
+    0% { opacity: 1; } 
+    50% { opacity: .1; } 
+    100% { opacity: 1; }
 }

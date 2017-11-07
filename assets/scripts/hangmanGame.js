@@ -31,14 +31,22 @@ var hangmanGame = {
 		],
 	currentGameState: 'preGame',
 	validInput: /^[A-Za-z]+$/,
+	//Store the HTML elements modified by game
+	wordDisplay: document.getElementById('word-display'),
+	guessesRemainingDisplay: document.getElementById('guesses-remaining-display'),
+	keyPromptDisplay: document.getElementById('key-prompt-text'),
+	scoreDisplay: document.getElementById('score-display'),
 
 	initialize: function () {
 		//Reset the game and variables
 		this.guessesRemaining = 10;
 		this.guessedLetters = [];
 		this.guessedWord = '';
-		document.getElementById('key-prompt-text').innerHTML = 'Guess the Word!';
+		this.keyPromptDisplay.innerHTML = 'Guess the Word!';
 		stickFigure.resetDrawing();
+		//Remove flashing class present if won
+		this.wordDisplay.classList.remove("flashit");
+
 		//Choose random word
 		this.chooseWord();
 
@@ -79,22 +87,27 @@ var hangmanGame = {
 	updateDisplay: function (gameState) {
 		switch(gameState) {
 			case 'won':
-				document.getElementById('key-prompt-text').innerHTML = 'You win, partner!';
-				//Display the 'word'
+				//Set prompt text and do victory flash
+				this.keyPromptDisplay.innerHTML = 'You win, partner!';
+				this.wordDisplay.classList.add("flashit");
+				//Display the full word
 				this.guessedWord = this.word;
 				break;
 			case 'lost':
-				document.getElementById('key-prompt-text').innerHTML = 'You hung him.';
-				//Display the 'word'
+				//Set prompt text
+				this.keyPromptDisplay.innerHTML = 'You hung him.';
+				//Display the full word
 				this.guessedWord = this.word;
+				//Reset score because of loss
+				this.score = 0;
 				break;					
 		}
 
 		stickFigure.updateDrawing(this.guessesRemaining);
 		
-		document.getElementById('guesses-remaining-display').innerHTML = this.guessesRemaining;
-		document.getElementById('score-display').innerHTML = this.score;
-		document.getElementById('word-display').innerHTML = this.guessedWord;
+		this.guessesRemainingDisplay.innerHTML = this.guessesRemaining;
+		this.scoreDisplay.innerHTML = this.score;
+		this.wordDisplay.innerHTML = this.guessedWord;
 		//Convert array to string, to upper case, then remove commas. Display formatting is done by CSS
 		document.getElementById('guessed-display').innerHTML = this.guessedLetters.toString().toUpperCase().replace(/,/g, '');
 	},
