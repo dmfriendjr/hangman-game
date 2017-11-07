@@ -36,6 +36,11 @@ var hangmanGame = {
 	guessesRemainingDisplay: document.getElementById('guesses-remaining-display'),
 	keyPromptDisplay: document.getElementById('key-prompt-text'),
 	scoreDisplay: document.getElementById('score-display'),
+	//Get audio files
+	musicAudio: new Audio('./assets/sound/westernMusic.mp3'),
+	hangingSound: new Audio('./assets/sound/hangingSound.wav'),
+	clappingSound: new Audio('./assets/sound/clapping.wav'),
+	musicStarted: false,
 
 	initialize: function () {
 		//Reset the game and variables
@@ -49,6 +54,19 @@ var hangmanGame = {
 
 		//Choose random word
 		this.chooseWord();
+
+		//Play and stop audio
+		this.hangingSound.pause();
+		this.hangingSound.currentTime = 0;
+		this.clappingSound.pause();
+		this.clappingSound.currentTime = 0;
+
+		if (!this.musicStarted){
+			this.musicAudio.volume = 0.25;
+			this.musicAudio.loop = true;
+			this.musicAudio.play();
+			this.musicStarted = true;
+		}
 
 		//Set guessed word to correct number of blanks for word length
 		for (let i = 0; i < this.word.length; i++) {
@@ -92,6 +110,9 @@ var hangmanGame = {
 				this.wordDisplay.classList.add("flashit");
 				//Display the full word
 				this.guessedWord = this.word;
+				//Play clapping sounds
+				this.clappingSound.volume = .25;
+				this.clappingSound.play();
 				break;
 			case 'lost':
 				//Set prompt text
@@ -100,6 +121,9 @@ var hangmanGame = {
 				this.guessedWord = this.word;
 				//Reset score because of loss
 				this.score = 0;
+				//Play hanging sound
+				this.hangingSound.volume = .25;
+				this.hangingSound.play();
 				break;					
 		}
 

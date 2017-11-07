@@ -21,7 +21,7 @@
 			<div class="col-12 text-center"><!--Column begin-->
 				<div class="card"> <!--Card begin-->
 					<div class="card-header">
-						<h2 class="title-text" id="key-prompt-text">Any Key To Start</h2>	
+						<h2 class="prompt-text" id="key-prompt-text">Any Key To Start</h2>	
 					</div>
 					<div class="card-body">
 						<div class="row"><!--Inner row begin-->
@@ -90,8 +90,34 @@
 				</div> <!--Card end-->
 			</div><!--Column end-->
 		</div><!--Row end-->
+		<footer>
+			<p>&copy; 2017 David Friend</p>
+			<input type="button" class="credits-btn" value="Credits" data-toggle="modal" data-target="#exampleModal">
+		</footer>
+		<!--Credits modal-->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content credits-modal">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Credits</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      	<ul>
+		      		<li>
+		      			<a href="https://opengameart.org/content/western">Western</a> by 
+		      				<a href="https://opengameart.org/users/shalpin">shalpin</a> is licensed under 
+		      				<a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>
+		      		</li>
+		      	</ul>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
 	</div><!--Container end-->
-	
 	<script src="assets/scripts/hangmanGame.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>

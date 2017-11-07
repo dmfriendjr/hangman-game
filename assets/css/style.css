@@ -1,5 +1,6 @@
-html, body {
-    height: 100%;
+html {
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -13,6 +14,8 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
+    margin-bottom: 80px;
 }
 
 .card {
@@ -20,7 +23,7 @@ body {
 }
 
 .title-text {
-	text-align: center;
+    text-decoration: underline;
 }
 
 #guessed-display,
@@ -39,10 +42,12 @@ body {
     margin: 5px 0;
     color: black;
     background-color: #C19E75;
+    border-radius: 50%;
+    border: 3px solid black;
 }
 
 .letter-input:active {
-    transform: scale(.925);
+    transform: scale(.90);
 }
 
 .letter-input:focus {
@@ -57,4 +62,34 @@ body {
     0% { opacity: 1; } 
     50% { opacity: .1; } 
     100% { opacity: 1; }
+}
+
+.credits-btn {
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+    background-color: #C19E75;
+    border-radius: 8px;
+}
+
+.credits-modal {
+    background-color: #C19E75;
+    border-color: black;
+}
+
+footer p {
+    color: black;
+    font-size: 12px;
+    margin-top: 30px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #C19E75;
+  border-top: 3px solid #A47250;
+  text-align: center;
 }
