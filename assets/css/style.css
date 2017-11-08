@@ -79,6 +79,10 @@ body {
     border-radius: 8px;
 }
 
+.credits-btn:focus {
+    outline: none;
+}
+
 .credits-modal {
     background-color: #C19E75;
     border-color: black;
