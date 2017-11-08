@@ -1,5 +1,6 @@
 //Store canvas and on screen buttons
 const canvas = document.querySelector('canvas');
+const buttons = document.getElementsByClassName('letter-input');
 
 let hangmanGame = {
 	word: '',
@@ -189,16 +190,7 @@ let hangmanGame = {
 				let letter = '';
 				if (event.type === 'click')
 				{
-					/*
-					* If click was not on letter-input button, don't process input
-					* I am handling this in this manner instead of button event listeners
-					* so that user can click anywhere to initialize game or go to next word
-					*/
-					if (!event.target.classList.contains('letter-input'))
-					{
-						return;
-					}
-					//This was input button click event, get data and set disabled
+					//This was input button event, get data
 					letter = event.target.getAttribute('data-letter');
 				}
 				else
@@ -293,8 +285,12 @@ String.prototype.replaceAt=function(index, char) {
 	return this.substr(0, index) + char + this.substr(index+char.length);
 }
 
-//Listen for events
+//Listen for key ups
 document.addEventListener('keyup', hangmanGame.handleInput.bind(hangmanGame));
-document.addEventListener('click', hangmanGame.handleInput.bind(hangmanGame));
+
+//Subscribe to events from on screen button inputs
+for (let i = 0; i < buttons.length; i++) {
+	buttons[i].addEventListener('click', hangmanGame.handleInput.bind(hangmanGame));
+}
 
 
