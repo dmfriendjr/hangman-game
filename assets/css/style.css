@@ -54,6 +54,10 @@ body {
     outline: 0;
 }
 
+.letter-input:disabled {
+    background-color: black;
+}
+
 .flashit{
   color: black;
     animation: flash linear 1s infinite;

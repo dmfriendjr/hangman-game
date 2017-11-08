@@ -1,13 +1,13 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
-var hangmanGame = {
+let hangmanGame = {
 	word: '',
 	guessedWord: '',
-	guessesRemaining: 11,
+	guessesRemaining: 10,
 	guessedLetters: [],
 	score: 0,
-	usedWords: [],
+	//Define all possible words
 	possibleWords: 
 		[
 		'saloon',
@@ -29,6 +29,8 @@ var hangmanGame = {
 		'petticoat',
 		'saddle'
 		],
+	wordBank: [],
+	//Define game state and valid input
 	currentGameState: 'preGame',
 	validInput: /^[A-Za-z]+$/,
 	//Store the HTML elements modified by game
@@ -81,25 +83,15 @@ var hangmanGame = {
 	},
 
 	chooseWord: function () {
-		this.word = this.possibleWords[Math.floor(Math.random()*this.possibleWords.length)];
-
-		//Don't use the same word twice until all have been used
-		if (this.usedWords.indexOf(this.word) !== -1)
+		if (this.wordBank.length === 0)
 		{
-			//Word has been used, see if all words have been used
-			if (this.usedWords.length === this.possibleWords.length) {
-				//Reset used words
-				this.usedWords = [];
-			}
-			else
-			{
-				//Picked word already used, choose new one
-				this.chooseWord();
-			}
-		} else {
-			//Word hasn't been used yet, add to used words to track
-			this.usedWords.push(this.word);
+			//No words in word bank, all have been used or hasn't initialized so reset it by copying possibleWords
+			this.wordBank = this.possibleWords.slice();
 		}
+		//Choose random word from bank
+		this.word = this.wordBank[Math.floor(Math.random()*this.wordBank.length)];
+		//Remove chosen word from wordBank
+		this.wordBank.splice(this.wordBank.indexOf(this.word),1);
 	},
 
 	updateDisplay: function (gameState) {
@@ -119,8 +111,6 @@ var hangmanGame = {
 				this.keyPromptDisplay.innerHTML = 'You hung him.';
 				//Display the full word
 				this.guessedWord = this.word;
-				//Reset score because of loss
-				this.score = 0;
 				//Play hanging sound
 				this.hangingSound.volume = .25;
 				this.hangingSound.play();
@@ -193,25 +183,23 @@ var hangmanGame = {
 					this.score++;
 				}
 				else if (this.guessesRemaining <= 0) {
-					//Out of guesses, word not complete, have lost
+					//Out of guesses, word not complete, have lost.
+					//Reset score because of loss
+					this.score = 0;
 					this.currentGameState = 'lost';
 				}
 				break;	
-			case 'won':
-				//If input when won, go to next word
+			default:
+				//If here, we have either won or lost so reset
 				this.initialize();
-				break;
-			case 'lost':
-				//if input when lost, go to next word
-				this.initialize();
-				break;				
+				break;			
 		}
 
 		this.updateDisplay(this.currentGameState);
 	}
 };
 
-var stickFigure = {
+let stickFigure = {
 	ctx: canvas.getContext('2d'),
 
 	resetDrawing: function () {
@@ -281,7 +269,7 @@ document.onkeyup = function(event) {
 //Subscribe to events from on screen button inputs
 const buttons = document.getElementsByClassName('letter-input');
 
-for (var i = 0; i < buttons.length; i++) {
+for (let i = 0; i < buttons.length; i++) {
 	buttons[i].addEventListener('click', function(event) {
 		hangmanGame.handleInput(this.getAttribute('data-letter'));
 	});
