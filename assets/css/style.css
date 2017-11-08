@@ -23,13 +23,16 @@ body {
 }
 
 .title-text {
-    text-decoration: underline;
+    font-weight: bold;
 }
 
 #guessed-display,
 #word-display {
 	letter-spacing: 15px;
     font-size: 28px;
+    /* Make this take up space even when empty to prevent moving other content
+    after you get a guess wrong initially*/
+    min-height: 42px; 
 }
 
 #word-display:first-letter {

@@ -1,5 +1,6 @@
+//Store canvas and on screen buttons
 const canvas = document.querySelector('canvas');
-const ctx = canvas.getContext('2d');
+const buttons = document.getElementsByClassName('letter-input');
 
 let hangmanGame = {
 	word: '',
@@ -35,9 +36,11 @@ let hangmanGame = {
 	validInput: /^[A-Za-z]+$/,
 	//Store the HTML elements modified by game
 	wordDisplay: document.getElementById('word-display'),
+	guessedDisplay: document.getElementById('guessed-display'),
 	guessesRemainingDisplay: document.getElementById('guesses-remaining-display'),
 	keyPromptDisplay: document.getElementById('key-prompt-text'),
 	scoreDisplay: document.getElementById('score-display'),
+	inputButtons: document.getElementsByClassName('letter-input'),
 	//Get audio files
 	musicAudio: new Audio('./assets/sound/westernMusic.mp3'),
 	hangingSound: new Audio('./assets/sound/hangingSound.wav'),
@@ -73,6 +76,11 @@ let hangmanGame = {
 		//Set guessed word to correct number of blanks for word length
 		for (let i = 0; i < this.word.length; i++) {
 			this.guessedWord += '_';
+		}
+
+		//Reset all on screen buttons by removing disabled
+		for (let i = 0; i < this.inputButtons.length; i++) {
+			this.inputButtons[i].removeAttribute('disabled');
 		}
 
 		//Initialize display
@@ -123,7 +131,7 @@ let hangmanGame = {
 		this.scoreDisplay.innerHTML = this.score;
 		this.wordDisplay.innerHTML = this.guessedWord;
 		//Convert array to string, to upper case, then remove commas. Display formatting is done by CSS
-		document.getElementById('guessed-display').innerHTML = this.guessedLetters.toString().toUpperCase().replace(/,/g, '');
+		this.guessedDisplay.innerHTML = this.guessedLetters.toString().toUpperCase().replace(/,/g, '');
 	},
 
 
@@ -136,11 +144,14 @@ let hangmanGame = {
 	},
 
 	checkGuess: function(letter) {
-		//Check if letter has been guessed, that its actually a letter (not a number or symbol), 
+		//Validate input - check if letter has been guessed, that its actually a letter (not a number or symbol), 
 		//and length is one (to catch input like Escape)
 		if (this.hasBeenGuessed(letter) || !letter.match(this.validInput) || letter.length != 1) {
 			return;
 		}
+
+		//Input validated, disable on screen button for corresponding letter
+		document.getElementById(`letter-${letter}`).setAttribute('disabled', true);	
 
 		let validGuess = false;
 
@@ -170,13 +181,26 @@ let hangmanGame = {
 		}		
 	},
 
-	handleInput: function(letter) {
+	handleInput: function(event) {
 		switch(this.currentGameState) {
 			case 'preGame':
 				this.initialize();
 				break;
 			case 'inPlay':
+				let letter = '';
+				if (event.type === 'click')
+				{
+					//This was input button event, get data and set disabled
+					letter = event.target.getAttribute('data-letter')
+				}
+				else
+				{
+					//Keyboard input, process keyCode
+					letter = String.fromCharCode(event.keyCode).toLowerCase();
+				}
+
 				this.checkGuess(letter);
+
 				if (this.isWordComplete()) {
 					//Word is complete, have won the round
 					this.currentGameState = 'won';
@@ -261,18 +285,12 @@ String.prototype.replaceAt=function(index, char) {
 	return this.substr(0, index) + char + this.substr(index+char.length);
 }
 
-document.onkeyup = function(event) {
-	let letter = String.fromCharCode(event.keyCode).toLowerCase();
-	hangmanGame.handleInput(letter);
-}
+//Listen for key ups
+document.addEventListener('keyup', hangmanGame.handleInput.bind(hangmanGame));
 
 //Subscribe to events from on screen button inputs
-const buttons = document.getElementsByClassName('letter-input');
-
 for (let i = 0; i < buttons.length; i++) {
-	buttons[i].addEventListener('click', function(event) {
-		hangmanGame.handleInput(this.getAttribute('data-letter'));
-	});
+	buttons[i].addEventListener('click', hangmanGame.handleInput.bind(hangmanGame));
 }
 
 
