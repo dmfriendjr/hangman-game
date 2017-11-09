@@ -39,6 +39,7 @@ let hangmanGame = {
 	guessedDisplay: document.getElementById('guessed-display'),
 	guessesRemainingDisplay: document.getElementById('guesses-remaining-display'),
 	keyPromptDisplay: document.getElementById('key-prompt-text'),
+	continuePromptDisplay: document.getElementById('continue-display'),
 	scoreDisplay: document.getElementById('score-display'),
 	inputButtons: document.getElementsByClassName('letter-input'),
 	//Get audio files
@@ -53,6 +54,7 @@ let hangmanGame = {
 		this.guessedLetters = [];
 		this.guessedWord = '';
 		this.keyPromptDisplay.innerHTML = 'Guess the Word!';
+		this.continuePromptDisplay.innerHTML = '';
 		stickFigure.resetDrawing();
 		//Remove flashing class present if won
 		this.wordDisplay.classList.remove("flashit");
@@ -107,6 +109,7 @@ let hangmanGame = {
 			case 'won':
 				//Set prompt text and do victory flash
 				this.keyPromptDisplay.innerHTML = 'You win, partner!';
+				this.continuePromptDisplay.innerHTML = "Press Any Key To Continue";
 				this.wordDisplay.classList.add("flashit");
 				//Display the full word
 				this.guessedWord = this.word;
@@ -117,6 +120,7 @@ let hangmanGame = {
 			case 'lost':
 				//Set prompt text
 				this.keyPromptDisplay.innerHTML = 'You hung him.';
+				this.continuePromptDisplay.innerHTML = "Press Any Key To Continue";
 				//Display the full word
 				this.guessedWord = this.word;
 				//Play hanging sound

@@ -26,6 +26,21 @@ body {
     font-weight: bold;
 }
 
+.continue-prompt-text {
+    text-align: center;
+    font-size: 15px;
+    min-height: 18px;
+}
+
+.scaleit{
+    animation: scale linear 1s infinite;
+}
+@keyframes scale {
+    0% { transform: scale(1.0); }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1.0); }
+}
+
 #guessed-display,
 #word-display {
 	letter-spacing: 15px;
@@ -37,6 +52,17 @@ body {
 
 #word-display:first-letter {
 	text-transform: capitalize;
+}
+
+/*Used when winning on word display*/
+.flashit{
+  color: black;
+    animation: flash linear 1s infinite;
+}
+@keyframes flash {
+    0% { opacity: 1; } 
+    50% { opacity: .1; } 
+    100% { opacity: 1; }
 }
 
 .letter-input {
@@ -59,16 +85,6 @@ body {
 
 .letter-input:disabled {
     background-color: black;
-}
-
-.flashit{
-  color: black;
-    animation: flash linear 1s infinite;
-}
-@keyframes flash {
-    0% { opacity: 1; } 
-    50% { opacity: .1; } 
-    100% { opacity: 1; }
 }
 
 .credits-btn {
